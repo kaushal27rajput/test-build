@@ -1,0 +1,24 @@
+---
+imports:
+  - path: https://storage.googleapis.com/rs-gdm-stl-master/stackdriver/notification-channels/rackspace-channels.jinja
+    name: rackspace-channels.jinja
+
+resources:
+  - type: rackspace-channels.jinja
+    name: rackspace-notification-channels
+    properties:
+      # watchman secret value is in the watchman api URL in the query string key 'secret'
+      watchman_secret: CHANGE_ME
+
+outputs:
+  - name: low-notification-channel-id
+    value: $(ref.low-notification-channel.name)
+  - name: normal-notification-channel-id
+    value: $(ref.normal-notification-channel.name)
+  - name: high-notification-channel-id
+    value: $(ref.high-notification-channel.name)
+  - name: urgent-notification-channel-id
+    value: $(ref.urgent-notification-channel.name)
+  - name: emergency-notification-channel-id
+    value: $(ref.emergency-notification-channel.name)
+...

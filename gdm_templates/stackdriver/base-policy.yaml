@@ -1,0 +1,53 @@
+---
+imports:
+  - path: https://storage.googleapis.com/rs-gdm-stl-master/constants_v1/constants_v1.py
+    name: constants_v1.py
+  - path: https://storage.googleapis.com/rs-gdm-stl-master/stackdriver/alert-policies/base/disk-usage.jinja
+    name: disk-usage.jinja
+  - path: https://storage.googleapis.com/rs-gdm-stl-master/stackdriver/alert-policies/base/memory-usage.jinja
+    name: memory-usage.jinja
+  - path: https://storage.googleapis.com/rs-gdm-stl-master/stackdriver/alert-policies/base/nat-gw.jinja
+    name: nat-gw.jinja
+  - path: https://storage.googleapis.com/rs-gdm-stl-master/stackdriver/alert-policies/base/uptime-check.jinja
+    name: uptime-check.jinja
+
+resources:
+  - type: constants_v1.py
+    name: sd-constants
+    properties:
+      # Fetch channel id via https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.notificationChannels/list
+      low-chan: &LOW_CHAN_ID 14715334200004499453
+      normal-chan: &NORMAL_CHAN_ID 17810509469644765301
+      high-chan: &HIGH_CHAN_ID 7428776972315358121
+      urgent-chan: &URGENT_CHAN_ID 2207690092669818522
+      emergency-chan: &EMERGENCY_CHAN_ID 14849138418025147799
+
+  - type: disk-usage.jinja
+    name: rax-mgcp-monitoring-disk_usage-urgent
+    properties:
+      disk_threshold_percentage: 90
+      channel_id: *URGENT_CHAN_ID
+      enabled: false
+
+  - type: memory-usage.jinja
+    name: rax-mgcp-monitoring-memory_usage
+    properties:
+      used_mem_threshold: 98
+      free_mem_threshold: 1
+      channel_id: *URGENT_CHAN_ID
+      enabled: false
+
+    # You must run the command `gcloud --project PROJECT_NAME beta logging metrics create nat_gw_dropped_conn --config-from-file=nat-gw-metric.yaml`
+    # See the README for more information
+  - type: nat-gw.jinja
+    name: rax-mgcp-monitoring-nat_gw_dropped_conn-emergency
+    properties:
+      channel_id: *EMERGENCY_CHAN_ID
+      enabled: false
+
+  - type: uptime-check.jinja
+    name: rax-mgcp-monitoring-uptime-check
+    properties:
+      channel_id: *EMERGENCY_CHAN_ID
+      enabled: false
+...
