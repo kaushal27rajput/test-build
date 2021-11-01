@@ -1,26 +1,26 @@
-resource "google_storage_bucket" "prod-storage" {
-  name          = "${var.project_id}-prod-storage"
+resource "google_storage_bucket" "backup-storage" {
+  name          = "${var.project_id}-backup-storage"
   location      = var.region
-  storage_class = "STANDARD"
+  storage_class = "NEARLINE"
 
   versioning {
-    enabled = true
+    enabled = false
   }
 
   lifecycle_rule {
     condition {
-      age = "365"
+      age = "30"
     }
     action {
       type          = "SetStorageClass"
-      storage_class = "NEARLINE"
+      storage_class = "COLDLINE"
     }
   }
 }
 
 
-resource "google_storage_bucket" "backup-storage" {
-  name          = "${var.project_id}-backup-data"
+resource "google_storage_bucket" "image-storage" {
+  name          = "${var.project_id}-image-data"
   location      = var.region
-  storage_class = "NEARLINE"
+  storage_class = "REGIONAL"
 }

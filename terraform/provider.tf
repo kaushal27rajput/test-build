@@ -15,6 +15,6 @@ terraform {
 
   backend "gcs" {
     bucket = "1192365-tfstate"
-    prefix = "mgcp-1192365-ip-qfs-sp-staging"
+    prefix = "de-kaushal-kumar"
   }
 }
