@@ -1,0 +1,8 @@
+*.key
+*sharedsecret.txt
+.terraform
+terraform.state
+key.json
+*.json
+*.gitkeep
+*key

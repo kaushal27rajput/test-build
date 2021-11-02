@@ -1,0 +1,11 @@
+---
+# NOTE: Ensure logConfig is enabled and has an ERRORS_ONLY filter for the compute.v1.router (nat-gw) GDM resource.
+# gcloud --project PROJECT_NAME beta logging metrics create nat_gw_dropped_conn --config-from-file=nat-gw-metric.yaml
+filter: |-
+  resource.type="nat_gateway"
+  jsonPayload.allocation_status="DROPPED"
+metricDescriptor:
+  metricKind: DELTA
+  unit: '1'
+  valueType: INT64
+...
